@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "970376849336",
+    "project_id": "juice-app-c0b50",
+    "storage_bucket": "juice-app-c0b50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970376849336:android:29f73224cc932dcacb114d",
+        "android_client_info": {
+          "package_name": "com.wizards.juice_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5qvAbPO0W6916xj2t2k4m3W8Kxz0d8T0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
