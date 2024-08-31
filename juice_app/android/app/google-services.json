@@ -1,13 +1,32 @@
 {
   "project_info": {
-    "project_number": "970376849336",
-    "project_id": "juice-app-c0b50",
-    "storage_bucket": "juice-app-c0b50.appspot.com"
+    "project_number": "786185714280",
+    "project_id": "juice-app-2de69",
+    "storage_bucket": "juice-app-2de69.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:970376849336:android:29f73224cc932dcacb114d",
+        "mobilesdk_app_id": "1:786185714280:android:92514b0c78bc38f00299dd",
+        "android_client_info": {
+          "package_name": "com.example.juice_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDSaVYYhugsO8Um6TNV9LdLNpimVjVnKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786185714280:android:26e839e3c1ccfb190299dd",
         "android_client_info": {
           "package_name": "com.wizards.juice_app"
         }
@@ -15,7 +34,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD5qvAbPO0W6916xj2t2k4m3W8Kxz0d8T0"
+          "current_key": "AIzaSyBDSaVYYhugsO8Um6TNV9LdLNpimVjVnKk"
         }
       ],
       "services": {

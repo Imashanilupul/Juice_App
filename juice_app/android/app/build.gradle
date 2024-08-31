@@ -1,9 +1,11 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
-    id 'com.google.gms.google-services'
 }
 
 def localProperties = new Properties()
@@ -25,7 +27,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace = "com.wizards.juice_app"
+    namespace = "com.example.juice_app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -56,9 +58,4 @@ android {
 
 flutter {
     source = "../.."
-}
-
-dependencies {
-    implementation platform('com.google.firebase:firebase-bom:33.2.0')
-    implementation 'com.google.firebase:firebase-analytics'
 }
