@@ -27,53 +27,75 @@ class _UserHomeState extends State<UserHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appColors.background,
-      appBar: AppBar(
-        title: const TextField(
-          autofocus: true,
-          decoration: InputDecoration(
-            icon: Icon(Icons.search),
-            hintText: "Search...",
-            hintStyle: TextStyle(color: Colors.white),
-            border: OutlineInputBorder(
-              gapPadding: BorderSide.strokeAlignCenter,
-            ),
-          ),
-        ),
-      ),
+      appBar: _selectedIndex == 0
+          ? AppBar(
+              title: const TextField(
+                decoration: InputDecoration(
+                  labelText: "Search...",
+                  suffixIcon: Icon(Icons.search),
+                  alignLabelWithHint: false,
+                  hintStyle: TextStyle(color: Colors.white),
+                  border: OutlineInputBorder(
+                      gapPadding: BorderSide.strokeAlignCenter,
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                ),
+              ),
+            )
+          : null,
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: appColors.buttons_col,
-        items: const <BottomNavigationBarItem>[
-          // Home icon
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              spreadRadius: 1,
+              blurRadius: 100,
             ),
-            label: "Home",
-          ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(50)),
+          child: BottomNavigationBar(
+            backgroundColor: appColors.buttons_col,
+            items: const <BottomNavigationBarItem>[
+              // Home icon
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                ),
+                label: "Home",
+              ),
 
-          // Shopping cart item
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add_shopping_cart,
-            ),
-            label: 'cart',
-          ),
+              // Shopping cart item
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.shopping_cart,
+                ),
+                label: 'Cart',
+              ),
 
-          // Profile icon
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.account_circle_rounded,
+              // Profile icon
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.account_circle_rounded,
+                ),
+                label: 'Profile',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            unselectedItemColor: Colors.grey,
+            selectedItemColor: Colors.white,
+            selectedIconTheme: const IconThemeData(
+              size: 32,
+              applyTextScaling: true,
             ),
-            label: 'Profile',
+            onTap: _onItemTapped,
           ),
-        ],
-        currentIndex: _selectedIndex,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.white,
-        onTap: _onItemTapped,
+        ),
       ),
     );
   }
