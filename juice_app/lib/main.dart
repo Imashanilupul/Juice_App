@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:juice_app/app_colors.dart' as appColors;
 import 'package:juice_app/User_pages/user_home.dart' as UserHome;
+import 'package:juice_app/User_pages/user_sign_up.dart' as usrSignup;
 
 void main() => runApp(MyApp());
 
@@ -18,7 +19,7 @@ class _MainState extends State<MyApp> {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: UserHome.UserHome(),
+      home: usrSignup.UserSignUp(),
     );
   }
 }
