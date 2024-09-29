@@ -1,15 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:juice_app/app_colors.dart' as appColor;
 import 'package:juice_app/User_pages/user_sign_up.dart' as signUpPage;
 
-class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+class SignIn extends StatelessWidget {
+  SignIn({super.key});
 
-  @override
-  _SignInState createState() => _SignInState();
-}
+  //Text editing controllers
+  final emailController = TextEditingController();
 
-class _SignInState extends State<SignIn> {
+  final passwdController = TextEditingController();
+
+  // Sign user in method
+  void signUserIn() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwdController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +62,7 @@ class _SignInState extends State<SignIn> {
                 child: Column(
                   children: [
                     TextFormField(
+                      controller: emailController,
                       decoration: const InputDecoration(
                           prefixIcon: Icon(
                             Icons.email_outlined,
@@ -57,6 +75,7 @@ class _SignInState extends State<SignIn> {
 
                     //password field
                     TextFormField(
+                      controller: passwdController,
                       decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.lock_open_rounded,
@@ -78,7 +97,7 @@ class _SignInState extends State<SignIn> {
                   width: 200,
                 ),
                 ElevatedButton(
-                  onPressed: () => {},
+                  onPressed: () => signUserIn(),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: appColor.buttons_col,
                     shape: const CircleBorder(),
