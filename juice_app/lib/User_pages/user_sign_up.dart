@@ -80,6 +80,20 @@ class _UserSignUpState extends State<UserSignUp> {
                       },
                     ),
                     SizedBox(height: 17),
+
+                    //email field
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.email_rounded,
+                          size: 32,
+                        ),
+                        labelText: "Email",
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    SizedBox(height: 17),
+
                     //Telephone number field
                     TextFormField(
                       decoration: const InputDecoration(
@@ -153,7 +167,7 @@ class _UserSignUpState extends State<UserSignUp> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 const SizedBox(
-                  height: 200,
+                  height: 120,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

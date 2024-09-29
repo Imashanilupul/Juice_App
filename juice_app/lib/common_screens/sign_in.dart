@@ -47,11 +47,11 @@ class _SignInState extends State<SignIn> {
                     TextFormField(
                       decoration: const InputDecoration(
                           prefixIcon: Icon(
-                            Icons.phone,
+                            Icons.email_outlined,
                             size: 32,
                           ),
-                          labelText: "Contact Number"),
-                      keyboardType: TextInputType.phone,
+                          labelText: "Email"),
+                      keyboardType: TextInputType.emailAddress,
                     ),
                     SizedBox(height: 17),
 
