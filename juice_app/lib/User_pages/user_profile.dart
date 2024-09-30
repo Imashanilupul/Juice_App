@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:juice_app/app_colors.dart' as appColors;
 
 class UserProfile extends StatelessWidget {
-  const UserProfile({Key? key}) : super(key: key);
+  const UserProfile({super.key});
 
   void signUserOut() {
     FirebaseAuth.instance.signOut();
@@ -17,11 +17,11 @@ class UserProfile extends StatelessWidget {
     return Scaffold(
       backgroundColor: appColors.background,
       appBar: AppBar(
-        title: Text("User profile"),
+        title: const Text("User profile"),
         actions: [
           IconButton(
             onPressed: signUserOut,
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
           ),
         ],
         leading: Icon(
@@ -35,7 +35,7 @@ class UserProfile extends StatelessWidget {
           fontWeight: FontWeight.w700,
         ),
       ),
-      body: Center(
+      body: const Center(
         child: Text("This is a profile page"),
       ),
     );

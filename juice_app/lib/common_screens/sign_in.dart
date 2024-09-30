@@ -11,8 +11,19 @@ class SignIn extends StatelessWidget {
 
   final passwdController = TextEditingController();
 
+  // show snakbar
+  void showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   // Sign user in method
-  void signUserIn() async {
+  void signUserIn(BuildContext context) async {
+    if (emailController.text.isEmpty || passwdController.text.isEmpty) {
+      showSnackBar(context, "Email and password fields cannot be empty.");
+      return;
+    }
+
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
@@ -20,9 +31,9 @@ class SignIn extends StatelessWidget {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        showSnackBar(context, 'No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        showSnackBar(context, 'Wrong password provided for that user.');
       }
     }
   }
@@ -97,7 +108,7 @@ class SignIn extends StatelessWidget {
                   width: 200,
                 ),
                 ElevatedButton(
-                  onPressed: () => signUserIn(),
+                  onPressed: () => signUserIn(context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: appColor.buttons_col,
                     shape: const CircleBorder(),

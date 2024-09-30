@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:juice_app/app_colors.dart' as appColor;
 import 'package:juice_app/common_screens/sign_in.dart' as signinScreen;
@@ -10,6 +12,41 @@ class UserSignUp extends StatefulWidget {
 }
 
 class _UserSignUpState extends State<UserSignUp> {
+  final _formKey = GlobalKey<FormState>();
+
+  //controllers for input fields
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _contactNumberController =
+      TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  // email validation
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter an email address';
+    }
+    String pattern = r'^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
+    RegExp regex = RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Enter a valid email';
+    }
+    return null;
+  }
+
+  // paswwd and confrm passwd matching checker
+  String? _validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please confirm your password';
+    } else if (value != _passwordController.text) {
+      return 'Passwords do not match';
+    }
+    return null;
+  }
+
 // Phone number validation
   String? validatePhoneNumber(String? value) {
     if (value == null || value.isEmpty) {
@@ -62,10 +99,12 @@ class _UserSignUpState extends State<UserSignUp> {
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Form(
+                key: _formKey,
                 child: Column(
                   children: [
                     //Name Field
                     TextFormField(
+                      controller: _fullNameController,
                       decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.account_circle_rounded,
@@ -83,6 +122,8 @@ class _UserSignUpState extends State<UserSignUp> {
 
                     //email field
                     TextFormField(
+                      controller: _emailController,
+                      validator: _validateEmail,
                       decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.email_rounded,
@@ -96,6 +137,7 @@ class _UserSignUpState extends State<UserSignUp> {
 
                     //Telephone number field
                     TextFormField(
+                      controller: _contactNumberController,
                       decoration: const InputDecoration(
                           prefixIcon: Icon(
                             Icons.phone,
@@ -108,6 +150,13 @@ class _UserSignUpState extends State<UserSignUp> {
                     SizedBox(height: 17),
                     //Address field
                     TextFormField(
+                      controller: _addressController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your address';
+                        }
+                        return null;
+                      },
                       decoration: const InputDecoration(
                           prefixIcon: Icon(
                             Icons.location_on_outlined,
@@ -118,6 +167,7 @@ class _UserSignUpState extends State<UserSignUp> {
                     SizedBox(height: 17),
                     //password field
                     TextFormField(
+                      controller: _passwordController,
                       decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.lock_open_rounded,
@@ -130,6 +180,8 @@ class _UserSignUpState extends State<UserSignUp> {
                     SizedBox(height: 17),
                     //confirm password field
                     TextFormField(
+                      controller: _confirmPasswordController,
+                      validator: _validateConfirmPassword,
                       decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.lock_open_rounded,
@@ -150,7 +202,7 @@ class _UserSignUpState extends State<UserSignUp> {
                   width: 200,
                 ),
                 ElevatedButton(
-                  onPressed: () => {},
+                  onPressed: _signUpUser,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: appColor.buttons_col,
                     shape: const CircleBorder(),
@@ -198,5 +250,49 @@ class _UserSignUpState extends State<UserSignUp> {
         ),
       ),
     );
+  }
+
+  // Sign-up method with Firebase
+  Future<void> _signUpUser() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        // Firebase authentication code here
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+
+        // Store additional user information in Firestore
+        await FirebaseFirestore.instance.collection('users').add({
+          'fullName': _fullNameController.text,
+          'email': _emailController.text,
+          'contactNumber': _contactNumberController.text,
+          'address': _addressController.text,
+        });
+
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sign-up successful!')),
+        );
+
+        // Navigate to the home screen or another page after successful sign-up
+      } catch (e) {
+        // Handle errors
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${e.toString()}')),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _contactNumberController.dispose();
+    _addressController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
   }
 }
