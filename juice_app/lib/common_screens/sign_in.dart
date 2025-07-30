@@ -29,6 +29,7 @@ class SignIn extends StatelessWidget {
         email: emailController.text,
         password: passwdController.text,
       );
+      Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showSnackBar(context, 'No user found for that email.');
