@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:juice_app/app_colors.dart' as appColors;
-import 'package:juice_app/User_pages/user_profile.dart' as usrProfile;
-import 'package:juice_app/User_pages/user_cart.dart' as usrCart;
+import 'package:juice_app/User_pages/user_profile.dart';
+import 'package:juice_app/User_pages/user_cart.dart';
 
+// Main UserHome StatefulWidget
 class UserHome extends StatefulWidget {
   const UserHome({Key? key}) : super(key: key);
 
@@ -10,14 +11,15 @@ class UserHome extends StatefulWidget {
   _UserHomeState createState() => _UserHomeState();
 }
 
+// State class for UserHome
 class _UserHomeState extends State<UserHome> {
   int _selectedIndex = 0;
 
-  // The list of widgets for each tab is now updated
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomePageContent(), // Use the new grid view widget for the home page
-    usrCart.UserCart(),
-    usrProfile.UserProfile(),
+  // The list of widgets for each tab. Must be `final`, not `const`.
+  static final List<Widget> _widgetOptions = <Widget>[
+    const HomePageContent(),
+    const UserCart(),
+    const UserProfile(),
   ];
 
   void _onItemTapped(int index) {
@@ -29,25 +31,53 @@ class _UserHomeState extends State<UserHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Assuming you have this color defined in your app_colors.dart
-      backgroundColor: appColors.background, 
+      backgroundColor: appColors.background,
+      
+      // THIS IS THE CORRECTED APPBAR LOGIC
       appBar: _selectedIndex == 0
           ? AppBar(
+              // AppBar for Home page (index 0) with the search bar
+              backgroundColor: appColors.background,
+              elevation: 0,
               title: const TextField(
                 decoration: InputDecoration(
-                    labelText: "Search...",
-                    suffixIcon: Icon(Icons.search),
-                    alignLabelWithHint: false,
-                    hintStyle: TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(
-                        gapPadding: BorderSide.strokeAlignCenter,
-                        borderRadius: BorderRadius.all(Radius.circular(50)))),
+                  labelText: "Search...",
+                  suffixIcon: Icon(Icons.search),
+                  alignLabelWithHint: false,
+                  hintStyle: TextStyle(color: Colors.white70),
+                  labelStyle: TextStyle(color: Colors.white70),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white24),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                ),
+                style: TextStyle(color: Colors.white),
               ),
             )
-          : null,
+          : AppBar(
+              // A single, shared AppBar for Cart (index 1) and Profile (index 2)
+              title: Text(
+                _selectedIndex == 1 ? "Cart" : "Profile",
+                style: TextStyle(
+                  color: appColors.buttons_col,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              centerTitle: true,
+              backgroundColor: appColors.background,
+              elevation: 0,
+              automaticallyImplyLeading: false, // Removes the back arrow
+            ),
+      
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
+      
+      // Your BottomNavigationBar code
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(15),
         decoration: const BoxDecoration(
@@ -63,30 +93,18 @@ class _UserHomeState extends State<UserHome> {
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(50)),
           child: BottomNavigationBar(
-            // Assuming you have this color defined in your app_colors.dart
             backgroundColor: appColors.buttons_col,
             items: const <BottomNavigationBarItem>[
-              // Home icon
               BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                ),
+                icon: Icon(Icons.home),
                 label: "Home",
               ),
-
-              // Shopping cart item
               BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.shopping_cart,
-                ),
+                icon: Icon(Icons.shopping_cart),
                 label: 'Cart',
               ),
-
-              // Profile icon
               BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.account_circle_rounded,
-                ),
+                icon: Icon(Icons.account_circle_rounded),
                 label: 'Profile',
               ),
             ],
@@ -111,8 +129,6 @@ class _UserHomeState extends State<UserHome> {
 class HomePageContent extends StatelessWidget {
   const HomePageContent({Key? key}) : super(key: key);
 
-  // Sample data - replace with your own data from a database or API
-  // Make sure you have these images in your `assets/images/` folder
   final List<Map<String, dynamic>> products = const [
     {'image': 'assets/images/drink1.jpg', 'price': '30', 'rating': 5},
     {'image': 'assets/images/drink2.jpg', 'price': '25', 'rating': 4},
@@ -147,7 +163,6 @@ class HomePageContent extends StatelessWidget {
   }
 }
 
-
 //------------------------------------------------------------------
 // WIDGET FOR A SINGLE PRODUCT CARD IN THE GRID
 //------------------------------------------------------------------
@@ -167,8 +182,8 @@ class ProductItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      color: Colors.white, // Setting card color to white like in the image
-      clipBehavior: Clip.antiAlias, // Ensures the content respects the border radius
+      color: Colors.white,
+      clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
@@ -177,7 +192,6 @@ class ProductItemCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product Image
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -191,8 +205,6 @@ class ProductItemCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-
-            // Star Rating
             Row(
               children: List.generate(5, (index) {
                 return Icon(
@@ -203,8 +215,6 @@ class ProductItemCard extends StatelessWidget {
               }),
             ),
             const SizedBox(height: 4),
-
-            // Price
             Text(
               '\$$price',
               style: const TextStyle(

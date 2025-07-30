@@ -9,8 +9,6 @@ class UserCart extends StatefulWidget {
 }
 
 class _UserCartState extends State<UserCart> {
-  // Sample data for the cart items.
-  // In a real app, this would come from a state management solution.
   final List<Map<String, dynamic>> _cartItems = [
     {
       'name': 'Cafe latte',
@@ -34,41 +32,26 @@ class _UserCartState extends State<UserCart> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // Assuming appColors.background is a dark color like in the screenshot
-      backgroundColor: appColors.background, 
-      appBar: AppBar(
-        // Styling the AppBar to match the screenshot
-        title: const Text("Cart"),
-        centerTitle: true,
-        backgroundColor: appColors.background,
-        elevation: 0,
-        titleTextStyle: TextStyle(
-          // Assuming appColors.buttons_col is a contrasting color (e.g., white or a light blue)
-          color: appColors.buttons_col, 
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            // The list of cart items
-            Expanded(
-              child: ListView.builder(
-                itemCount: _cartItems.length,
-                itemBuilder: (context, index) {
-                  final item = _cartItems[index];
-                  return _buildCartItemCard(item);
-                },
-              ),
+    // The Scaffold and AppBar have been REMOVED from this file.
+    // The widget now correctly returns only its body content.
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        children: [
+          // The list of cart items
+          Expanded(
+            child: ListView.builder(
+              itemCount: _cartItems.length,
+              itemBuilder: (context, index) {
+                final item = _cartItems[index];
+                return _buildCartItemCard(item);
+              },
             ),
-            
-            // The summary and checkout section
-            _buildSummarySection(),
-          ],
-        ),
+          ),
+
+          // The summary and checkout section
+          _buildSummarySection(),
+        ],
       ),
     );
   }
@@ -127,7 +110,6 @@ class _UserCartState extends State<UserCart> {
             IconButton(
               icon: Icon(Icons.remove_circle, color: appColors.buttons_col),
               onPressed: () {
-                // Add logic to remove item
                 setState(() {
                   _cartItems.removeAt(_cartItems.indexOf(item));
                 });
@@ -141,22 +123,24 @@ class _UserCartState extends State<UserCart> {
 
   // Widget for the bottom summary section
   Widget _buildSummarySection() {
-    // In a real app, these values would be calculated from the cart items
-    const double subTotal = 21.75;
+    double subTotal = 0;
+    for (var item in _cartItems) {
+      subTotal += item['price'] * item['quantity'];
+    }
     const double shipping = 5.00;
-    const double total = subTotal + shipping;
+    double total = subTotal + shipping;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
         children: [
-          const Divider(thickness: 1),
+          const Divider(thickness: 1, color: Colors.white24),
           const SizedBox(height: 10),
           _buildSummaryRow("Sub Total", "\$${subTotal.toStringAsFixed(2)}"),
           const SizedBox(height: 8),
           _buildSummaryRow("Shipping", "\$${shipping.toStringAsFixed(2)}"),
           const SizedBox(height: 10),
-          const Divider(thickness: 1),
+          const Divider(thickness: 1, color: Colors.white24),
           const SizedBox(height: 10),
           _buildSummaryRow(
             "Total",
@@ -186,7 +170,7 @@ class _UserCartState extends State<UserCart> {
     );
   }
 
-  // Helper widget to create a row in the summary (e.g., "Sub Total" ...... "$XX.XX")
+  // Helper widget to create a row in the summary
   Widget _buildSummaryRow(String label, String value, {bool isTotal = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
